@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context=".NovoRegistroActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00A38D"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/btnVoltarNovo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="DENÚNCIA"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="PASSO 1: LOCALIZAÇÃO"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#E0E0E0"
+                android:src="@android:drawable/ic_dialog_map"
+                android:scaleType="centerInside"
+                app:tint="#888888" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="SELECIONE O CENTRO DE SAÚDE:"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinnerCentrosSaude"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="4dp"
+                android:background="@android:drawable/btn_dropdown" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="PASSO 2: CATEGORIA"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="3">
+                    <LinearLayout android:id="@+id/catInfra" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_manage" app:tint="#00A38D" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Infraestrutura" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/catMedicamentos" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_close_clear_cancel" app:tint="#00A38D" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Medicamentos" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/catAtendimento" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_call" app:tint="#00A38D" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Atendimento" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="3" android:layout_marginTop="8dp">
+                    <LinearLayout android:id="@+id/catAgendamento" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_my_calendar" app:tint="#00A38D" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Agendamento" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/catVacinacao" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_add" app:tint="#00A38D" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Vacinação" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/catTransporte" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_directions" app:tint="#00A38D" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Transporte" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="3" android:layout_marginTop="8dp">
+                    <LinearLayout android:id="@+id/catLimpeza" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_delete" app:tint="#00A38D" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Limpeza" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/catFila" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_sort_by_size" app:tint="#00A38D" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gestão de Fila" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/catAcessibilidade" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_info_details" app:tint="#00A38D" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Acessibilidade" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="PASSO 3: DETALHES"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editDescricao"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:drawable/editbox_background_normal"
+                android:gravity="top|start"
+                android:hint="Descreva o que aconteceu..."
+                android:padding="8dp"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="ADICIONAR FOTOS/VÍDEOS (CLIQUE ABAIXO)"
+                android:textSize="10sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:weightSum="4">
+
+                <ImageView
+                    android:id="@+id/btnAddFoto"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:background="#DDDDDD"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:padding="16dp"
+                    app:tint="#555555"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <ImageView
+                    android:id="@+id/imgPreview"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:background="#EEEEEE"
+                    android:src="@android:drawable/ic_menu_gallery"
+                    android:padding="16dp"
+                    app:tint="#888888"/>
+
+                <ImageView android:layout_width="0dp" android:layout_height="60dp" android:layout_weight="1" android:layout_marginEnd="4dp" android:background="#EEEEEE" />
+                <ImageView android:layout_width="0dp" android:layout_height="60dp" android:layout_weight="1" android:background="#EEEEEE" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnEnviar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:text="ENVIAR"
+                android:textColor="#FFFFFF"
+                app:backgroundTint="#00A38D" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
