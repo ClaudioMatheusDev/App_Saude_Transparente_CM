@@ -28,9 +28,27 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtItemStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Pendente"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_status_pendente"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
                 android:id="@+id/txtItemLocal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
                 android:text="Local: UBS Central"
                 android:textColor="#333333"
                 android:textSize="14sp"

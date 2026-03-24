@@ -13,6 +13,7 @@ public class Registro implements Parcelable {
     private String descricao;
     private String dataHora;
     private String caminhoImagem; // Caminho da imagem salva
+    private String status; // Status como String para compatibilidade com Gson
 
     public Registro(String categoria, String local, String descricao, String caminhoImagem) {
         this.id = String.valueOf(System.currentTimeMillis()); // ID único baseado em timestamp
@@ -20,6 +21,7 @@ public class Registro implements Parcelable {
         this.local = local;
         this.descricao = descricao;
         this.caminhoImagem = caminhoImagem;
+        this.status = StatusRegistro.PENDENTE.name(); // Começa como PENDENTE
         // Gera timestamp automaticamente
         this.dataHora = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(new Date());
     }
@@ -32,6 +34,7 @@ public class Registro implements Parcelable {
         descricao = in.readString();
         dataHora = in.readString();
         caminhoImagem = in.readString();
+        status = in.readString();
     }
 
     public static final Creator<Registro> CREATOR = new Creator<Registro>() {
@@ -53,12 +56,18 @@ public class Registro implements Parcelable {
     public String getDescricao() { return descricao; }
     public String getDataHora() { return dataHora; }
     public String getCaminhoImagem() { return caminhoImagem; }
+    public StatusRegistro getStatus() { 
+        return StatusRegistro.fromString(status); 
+    }
 
     // Setters (para edição)
     public void setCategoria(String categoria) { this.categoria = categoria; }
     public void setLocal(String local) { this.local = local; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
     public void setCaminhoImagem(String caminhoImagem) { this.caminhoImagem = caminhoImagem; }
+    public void setStatus(StatusRegistro status) { 
+        this.status = status.name(); 
+    }
 
     @Override
     public int describeContents() {
@@ -73,5 +82,6 @@ public class Registro implements Parcelable {
         dest.writeString(descricao);
         dest.writeString(dataHora);
         dest.writeString(caminhoImagem);
+        dest.writeString(status);
     }
 }

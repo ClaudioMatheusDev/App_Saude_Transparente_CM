@@ -1,6 +1,7 @@
 package com.example.appmaissaude;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,27 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
             holder.txtDataHora.setVisibility(View.GONE);
         }
 
+        // Configurar STATUS com cor e texto
+        StatusRegistro status = registro.getStatus();
+        holder.txtStatus.setText(status.getTexto());
+        holder.txtStatus.setBackgroundColor(Color.parseColor(status.getCor()));
+
+        // CLICAR NO STATUS para alternar
+        holder.txtStatus.setOnClickListener(v -> {
+            StatusRegistro proximoStatus = status.proximo();
+            registro.setStatus(proximoStatus);
+            
+            // Salvar alteração
+            GerenciadorDados.salvarRegistros(v.getContext(), listaRegistros);
+            
+            // Atualizar visual
+            holder.txtStatus.setText(proximoStatus.getTexto());
+            holder.txtStatus.setBackgroundColor(Color.parseColor(proximoStatus.getCor()));
+            
+            // Feedback
+            Toast.makeText(v.getContext(), "Status alterado para: " + proximoStatus.getTexto(), Toast.LENGTH_SHORT).show();
+        });
+
         // AÇÃO DO BOTÃO EDITAR
         holder.btnEditar.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), NovoRegistroActivity.class);
@@ -83,15 +105,16 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
     }
 
     class RegistroViewHolder extends RecyclerView.ViewHolder {
-        TextView txtCategoria, txtLocal, txtDescricao, txtDataHora;
+        TextView txtCategoria, txtLocal, txtDescricao, txtDataHora, txtStatus;
         ImageView btnExcluir, btnEditar;
 
         public RegistroViewHolder(@NonNull View itemView) {
             super(itemView);
             txtCategoria = itemView.findViewById(R.id.txtItemCategoria);
+            txtStatus = itemView.findViewById(R.id.txtItemStatus);
             txtLocal = itemView.findViewById(R.id.txtItemLocal);
             txtDescricao = itemView.findViewById(R.id.txtItemDescricao);
-            txtDataHora = itemView.findViewById(R.id.txtItemDataHora); // Você pode adicionar isso ao layout
+            txtDataHora = itemView.findViewById(R.id.txtItemDataHora);
             btnExcluir = itemView.findViewById(R.id.btnExcluir);
             btnEditar = itemView.findViewById(R.id.btnEditar);
         }
