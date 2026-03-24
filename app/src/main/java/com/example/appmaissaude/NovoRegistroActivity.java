@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.util.List;
@@ -223,5 +224,36 @@ public class NovoRegistroActivity extends AppCompatActivity {
         });
 
         btnVoltarNovo.setOnClickListener(v -> finish());
+
+        // Bottom Navigation
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
+        bottomNav.setSelectedItemId(R.id.nav_novo); // Marca "Novo" como selecionado
+        
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            
+            if (itemId == R.id.nav_home) {
+                // Volta para MainActivity
+                Intent intent = new Intent(NovoRegistroActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Limpa a pilha e volta para MainActivity
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.nav_novo) {
+                // Já está em novo registro
+                return true;
+            } else if (itemId == R.id.nav_historico) {
+                Intent intent = new Intent(NovoRegistroActivity.this, AcompanhamentoActivity.class);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.nav_notificacoes) {
+                Toast.makeText(this, "Alertas em desenvolvimento", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (itemId == R.id.nav_perfil) {
+                Toast.makeText(this, "Perfil em desenvolvimento", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            
+            return false;
+        });
     }
 }
