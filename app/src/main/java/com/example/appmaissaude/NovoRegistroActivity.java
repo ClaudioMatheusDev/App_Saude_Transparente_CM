@@ -2,6 +2,8 @@ package com.example.appmaissaude;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,23 +15,33 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
 import java.util.List;
 
 public class NovoRegistroActivity extends AppCompatActivity {
 
     private String categoriaSelecionada = "";
     private Uri imagemSelecionadaUri = null;
+    private Registro registroEmEdicao = null; // Null = modo criar, preenchido = modo editar
+    private boolean modoEdicao = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_novo_registro);
+
+        // VERIFICAR SE É MODO DE EDIÇÃO
+        if (getIntent().hasExtra("registro_para_editar")) {
+            registroEmEdicao = getIntent().getParcelableExtra("registro_para_editar");
+            modoEdicao = true;
+        }
 
         // Referências dos componentes
         ImageView btnVoltarNovo = findViewById(R.id.btnVoltarNovo);
@@ -38,11 +50,45 @@ public class NovoRegistroActivity extends AppCompatActivity {
         Spinner spinnerCentrosSaude = findViewById(R.id.spinnerCentrosSaude);
         ImageView btnAddFoto = findViewById(R.id.btnAddFoto);
         ImageView imgPreview = findViewById(R.id.imgPreview);
+        TextView txtTitulo = findViewById(R.id.txtTituloNovoRegistro); // Você pode adicionar isso ao layout
+
+        // Atualizar UI se for modo de edição
+        if (modoEdicao && registroEmEdicao != null) {
+            if (txtTitulo != null) {
+                txtTitulo.setText("EDITAR REGISTRO");
+            }
+            btnEnviar.setText("ATUALIZAR");
+        }
 
         // 1. Configurar o Spinner (Lista de Locais)
         String[] locais = {"UBS Central", "Hospital Regional", "Posto de Saúde Vila Nova", "UPA 24h Centro", "Centro de Saúde da Família"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locais);
         spinnerCentrosSaude.setAdapter(adapter);
+
+        // Popular campos se for modo de edição
+        if (modoEdicao && registroEmEdicao != null) {
+            editDescricao.setText(registroEmEdicao.getDescricao());
+            categoriaSelecionada = registroEmEdicao.getCategoria();
+            
+            // Selecionar local no spinner
+            for (int i = 0; i < locais.length; i++) {
+                if (locais[i].equals(registroEmEdicao.getLocal())) {
+                    spinnerCentrosSaude.setSelection(i);
+                    break;
+                }
+            }
+            
+            // Carregar imagem se existir
+            if (registroEmEdicao.getCaminhoImagem() != null) {
+                File imgFile = new File(registroEmEdicao.getCaminhoImagem());
+                if (imgFile.exists()) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    imgPreview.setImageBitmap(bitmap);
+                    imgPreview.setPadding(0, 0, 0, 0);
+                    imgPreview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                }
+            }
+        }
 
         // 2. Lógica da Galeria de Fotos
         ActivityResultLauncher<Intent> galeriaLauncher = registerForActivityResult(
@@ -92,6 +138,27 @@ public class NovoRegistroActivity extends AppCompatActivity {
             cat.setOnClickListener(clickCategoria);
         }
 
+        // Destacar categoria se for modo de edição
+        if (modoEdicao && registroEmEdicao != null) {
+            for (LinearLayout cat : listaCategorias) {
+                int id = cat.getId();
+                String catNome = "";
+                if (id == R.id.catInfra) catNome = "Infraestrutura";
+                else if (id == R.id.catMedicamentos) catNome = "Medicamentos";
+                else if (id == R.id.catAtendimento) catNome = "Atendimento";
+                else if (id == R.id.catAgendamento) catNome = "Agendamento";
+                else if (id == R.id.catVacinacao) catNome = "Vacinação";
+                else if (id == R.id.catTransporte) catNome = "Transporte";
+                else if (id == R.id.catLimpeza) catNome = "Limpeza";
+                else if (id == R.id.catFila) catNome = "Gestão de Fila";
+                else if (id == R.id.catAcessibilidade) catNome = "Acessibilidade";
+                
+                if (catNome.equals(registroEmEdicao.getCategoria())) {
+                    cat.setBackgroundColor(Color.parseColor("#D0EFEA"));
+                }
+            }
+        }
+
         // 4. BOTÃO ENVIAR (Persistência Real com Validação)
         btnEnviar.setOnClickListener(v -> {
             // VALIDAÇÃO COMPLETA
@@ -120,18 +187,38 @@ public class NovoRegistroActivity extends AppCompatActivity {
                 if (caminhoImagem == null) {
                     Toast.makeText(this, "⚠️ Erro ao salvar imagem. Continuando sem foto...", Toast.LENGTH_SHORT).show();
                 }
+            } else if (modoEdicao && registroEmEdicao != null) {
+                // Manter imagem antiga se não selecionou nova
+                caminhoImagem = registroEmEdicao.getCaminhoImagem();
             }
 
-            // Criar o objeto com os dados da tela
             String local = spinnerCentrosSaude.getSelectedItem().toString();
-            Registro novoRegistro = new Registro(categoriaSelecionada, local, desc, caminhoImagem);
 
-            // Guardar permanentemente
-            List<Registro> listaAtual = GerenciadorDados.carregarRegistros(this);
-            listaAtual.add(novoRegistro);
-            GerenciadorDados.salvarRegistros(this, listaAtual);
+            if (modoEdicao && registroEmEdicao != null) {
+                // MODO EDIÇÃO: Atualizar registro existente
+                registroEmEdicao.setCategoria(categoriaSelecionada);
+                registroEmEdicao.setLocal(local);
+                registroEmEdicao.setDescricao(desc);
+                registroEmEdicao.setCaminhoImagem(caminhoImagem);
+                
+                boolean sucesso = GerenciadorDados.atualizarRegistro(this, registroEmEdicao);
+                if (sucesso) {
+                    Toast.makeText(this, "✅ Registro atualizado com sucesso!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "❌ Erro ao atualizar registro!", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // MODO CRIAÇÃO: Criar novo registro
+                Registro novoRegistro = new Registro(categoriaSelecionada, local, desc, caminhoImagem);
 
-            Toast.makeText(this, "✅ Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                // Guardar permanentemente
+                List<Registro> listaAtual = GerenciadorDados.carregarRegistros(this);
+                listaAtual.add(novoRegistro);
+                GerenciadorDados.salvarRegistros(this, listaAtual);
+
+                Toast.makeText(this, "✅ Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
+            }
+
             finish();
         });
 

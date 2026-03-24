@@ -40,6 +40,20 @@ public class GerenciadorDados {
         return gson.fromJson(json, type); // Usa singleton
     }
 
+    // ATUALIZAR um registro específico
+    public static boolean atualizarRegistro(Context context, Registro registroAtualizado) {
+        List<Registro> lista = carregarRegistros(context);
+        
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getId().equals(registroAtualizado.getId())) {
+                lista.set(i, registroAtualizado);
+                salvarRegistros(context, lista);
+                return true;
+            }
+        }
+        return false; // Não encontrou o registro
+    }
+
     // SALVAR IMAGEM no armazenamento interno e retornar o caminho
     public static String salvarImagem(Context context, Uri imagemUri) {
         try {
