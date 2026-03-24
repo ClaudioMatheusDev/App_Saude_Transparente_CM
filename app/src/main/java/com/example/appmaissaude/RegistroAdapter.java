@@ -18,6 +18,12 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
         this.listaRegistros = listaRegistros;
     }
 
+    // Método para atualizar dados sem recriar o adapter
+    public void atualizarDados(List<Registro> novosRegistros) {
+        this.listaRegistros = novosRegistros;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public RegistroViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,6 +37,14 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
         holder.txtCategoria.setText(registro.getCategoria().toUpperCase());
         holder.txtLocal.setText("Local: " + registro.getLocal());
         holder.txtDescricao.setText(registro.getDescricao());
+        
+        // Mostrar data/hora
+        if (registro.getDataHora() != null) {
+            holder.txtDataHora.setText("📅 " + registro.getDataHora());
+            holder.txtDataHora.setVisibility(View.VISIBLE);
+        } else {
+            holder.txtDataHora.setVisibility(View.GONE);
+        }
 
         // AÇÃO DO BOTÃO EXCLUIR COM CONFIRMAÇÃO
         holder.btnExcluir.setOnClickListener(v -> {
@@ -61,7 +75,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
     }
 
     class RegistroViewHolder extends RecyclerView.ViewHolder {
-        TextView txtCategoria, txtLocal, txtDescricao;
+        TextView txtCategoria, txtLocal, txtDescricao, txtDataHora;
         ImageView btnExcluir;
 
         public RegistroViewHolder(@NonNull View itemView) {
@@ -69,6 +83,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
             txtCategoria = itemView.findViewById(R.id.txtItemCategoria);
             txtLocal = itemView.findViewById(R.id.txtItemLocal);
             txtDescricao = itemView.findViewById(R.id.txtItemDescricao);
+            txtDataHora = itemView.findViewById(R.id.txtItemDataHora); // Você pode adicionar isso ao layout
             btnExcluir = itemView.findViewById(R.id.btnExcluir);
         }
     }

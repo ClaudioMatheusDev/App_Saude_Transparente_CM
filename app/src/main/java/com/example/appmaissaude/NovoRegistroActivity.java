@@ -92,24 +92,46 @@ public class NovoRegistroActivity extends AppCompatActivity {
             cat.setOnClickListener(clickCategoria);
         }
 
-        // 4. BOTÃO ENVIAR (Persistência Real)
+        // 4. BOTÃO ENVIAR (Persistência Real com Validação)
         btnEnviar.setOnClickListener(v -> {
+            // VALIDAÇÃO COMPLETA
             if (categoriaSelecionada.isEmpty()) {
-                Toast.makeText(this, "Por favor, selecione uma categoria!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "❌ Por favor, selecione uma categoria!", Toast.LENGTH_SHORT).show();
                 return;
+            }
+
+            String desc = editDescricao.getText().toString().trim();
+            if (desc.isEmpty()) {
+                Toast.makeText(this, "❌ Por favor, descreva o problema!", Toast.LENGTH_SHORT).show();
+                editDescricao.requestFocus();
+                return;
+            }
+
+            if (desc.length() < 10) {
+                Toast.makeText(this, "❌ Descrição muito curta. Mínimo 10 caracteres.", Toast.LENGTH_SHORT).show();
+                editDescricao.requestFocus();
+                return;
+            }
+
+            // Salvar imagem se foi selecionada
+            String caminhoImagem = null;
+            if (imagemSelecionadaUri != null) {
+                caminhoImagem = GerenciadorDados.salvarImagem(this, imagemSelecionadaUri);
+                if (caminhoImagem == null) {
+                    Toast.makeText(this, "⚠️ Erro ao salvar imagem. Continuando sem foto...", Toast.LENGTH_SHORT).show();
+                }
             }
 
             // Criar o objeto com os dados da tela
             String local = spinnerCentrosSaude.getSelectedItem().toString();
-            String desc = editDescricao.getText().toString();
-            Registro novoRegistro = new Registro(categoriaSelecionada, local, desc);
+            Registro novoRegistro = new Registro(categoriaSelecionada, local, desc, caminhoImagem);
 
             // Guardar permanentemente
             List<Registro> listaAtual = GerenciadorDados.carregarRegistros(this);
             listaAtual.add(novoRegistro);
             GerenciadorDados.salvarRegistros(this, listaAtual);
 
-            Toast.makeText(this, "Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "✅ Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
             finish();
         });
 

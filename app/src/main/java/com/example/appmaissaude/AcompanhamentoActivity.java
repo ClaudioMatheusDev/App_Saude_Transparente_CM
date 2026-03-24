@@ -1,13 +1,19 @@
 package com.example.appmaissaude;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class AcompanhamentoActivity extends AppCompatActivity {
+
+    private RegistroAdapter adapter;
+    private RecyclerView rv;
+    private TextView txtListaVazia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,23 +25,44 @@ public class AcompanhamentoActivity extends AppCompatActivity {
         btnVoltar.setOnClickListener(v -> finish());
 
         // 2. Configurar a RecyclerView
-        RecyclerView rv = findViewById(R.id.rvRegistros);
+        rv = findViewById(R.id.rvRegistros);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
-        // 3. CARREGAR DADOS REAIS (Do SharedPreferences via GerenciadorDados)
-        List<Registro> registrosSalvos = GerenciadorDados.carregarRegistros(this);
+        // Mensagem de lista vazia (se existir no layout)
+        txtListaVazia = findViewById(R.id.txtListaVazia); // Você pode adicionar isso ao layout
 
-        // 4. Definir o Adapter com os dados reais
-        RegistroAdapter adapter = new RegistroAdapter(registrosSalvos);
-        rv.setAdapter(adapter);
+        // 3. CARREGAR DADOS REAIS (Do SharedPreferences via GerenciadorDados)
+        carregarDados();
     }
 
-    // Opcional: Atualizar a lista se o utilizador voltar a esta tela
+    // Método para carregar e atualizar dados
+    private void carregarDados() {
+        List<Registro> registrosSalvos = GerenciadorDados.carregarRegistros(this);
+
+        // Mostrar/esconder mensagem de lista vazia
+        if (txtListaVazia != null) {
+            if (registrosSalvos.isEmpty()) {
+                txtListaVazia.setVisibility(View.VISIBLE);
+                rv.setVisibility(View.GONE);
+            } else {
+                txtListaVazia.setVisibility(View.GONE);
+                rv.setVisibility(View.VISIBLE);
+            }
+        }
+
+        // Criar adapter apenas uma vez ou atualizar dados
+        if (adapter == null) {
+            adapter = new RegistroAdapter(registrosSalvos);
+            rv.setAdapter(adapter);
+        } else {
+            adapter.atualizarDados(registrosSalvos); // Método que criaremos no adapter
+        }
+    }
+
+    // Atualizar a lista quando o usuário voltar a esta tela
     @Override
     protected void onResume() {
         super.onResume();
-        RecyclerView rv = findViewById(R.id.rvRegistros);
-        List<Registro> registrosSalvos = GerenciadorDados.carregarRegistros(this);
-        rv.setAdapter(new RegistroAdapter(registrosSalvos));
+        carregarDados();
     }
 }
