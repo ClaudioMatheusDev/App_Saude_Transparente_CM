@@ -246,7 +246,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="#FFFFFF"
         android:padding="16dp">
 
@@ -302,45 +303,45 @@
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="3">
                     <LinearLayout android:id="@+id/catInfra" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_manage" app:tint="#00A38D" />
+                        <ImageView android:layout_width="64dp" android:layout_height="64dp" android:background="@drawable/bg_icon_category" android:padding="16dp" android:src="@drawable/ic_infraestrutura" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Infraestrutura" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
                     </LinearLayout>
                     <LinearLayout android:id="@+id/catMedicamentos" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_close_clear_cancel" app:tint="#00A38D" />
+                        <ImageView android:layout_width="64dp" android:layout_height="64dp" android:background="@drawable/bg_icon_category" android:padding="16dp" android:src="@drawable/ic_medicamentos" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Medicamentos" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
                     </LinearLayout>
                     <LinearLayout android:id="@+id/catAtendimento" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_call" app:tint="#00A38D" />
+                        <ImageView android:layout_width="64dp" android:layout_height="64dp" android:background="@drawable/bg_icon_category" android:padding="16dp" android:src="@drawable/ic_atendimento" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Atendimento" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="3" android:layout_marginTop="8dp">
                     <LinearLayout android:id="@+id/catAgendamento" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_my_calendar" app:tint="#00A38D" />
+                        <ImageView android:layout_width="64dp" android:layout_height="64dp" android:background="@drawable/bg_icon_category" android:padding="16dp" android:src="@drawable/ic_agendamento" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Agendamento" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
                     </LinearLayout>
                     <LinearLayout android:id="@+id/catVacinacao" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_add" app:tint="#00A38D" />
+                        <ImageView android:layout_width="64dp" android:layout_height="64dp" android:background="@drawable/bg_icon_category" android:padding="16dp" android:src="@drawable/ic_vacinacao" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Vacinação" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
                     </LinearLayout>
                     <LinearLayout android:id="@+id/catTransporte" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_directions" app:tint="#00A38D" />
+                        <ImageView android:layout_width="64dp" android:layout_height="64dp" android:background="@drawable/bg_icon_category" android:padding="16dp" android:src="@drawable/ic_transporte" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Transporte" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="3" android:layout_marginTop="8dp">
                     <LinearLayout android:id="@+id/catLimpeza" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_delete" app:tint="#00A38D" />
+                        <ImageView android:layout_width="64dp" android:layout_height="64dp" android:background="@drawable/bg_icon_category" android:padding="16dp" android:src="@drawable/ic_limpeza" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Limpeza" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
                     </LinearLayout>
                     <LinearLayout android:id="@+id/catFila" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_sort_by_size" app:tint="#00A38D" />
+                        <ImageView android:layout_width="64dp" android:layout_height="64dp" android:background="@drawable/bg_icon_category" android:padding="16dp" android:src="@drawable/ic_fila" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gestão de Fila" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
                     </LinearLayout>
                     <LinearLayout android:id="@+id/catAcessibilidade" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:padding="4dp" android:clickable="true" android:focusable="true">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:background="#F0F8F7" android:padding="12dp" android:src="@android:drawable/ic_menu_info_details" app:tint="#00A38D" />
+                        <ImageView android:layout_width="64dp" android:layout_height="64dp" android:background="@drawable/bg_icon_category" android:padding="16dp" android:src="@drawable/ic_acessibilidade" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Acessibilidade" android:textAlignment="center" android:textSize="10sp" android:layout_marginTop="4dp"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -418,4 +419,14 @@
                 app:backgroundTint="#00A38D" />
         </LinearLayout>
     </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_navigation_menu" />
 </LinearLayout>

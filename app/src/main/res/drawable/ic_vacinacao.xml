@@ -1,0 +1,10 @@
+<!-- Ícone de Vacinação - Seringa -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#00A38D"
+        android:pathData="M21,3l-1.41,1.41L18.17,3l-1.41,1.41l1.42,1.42L16.76,7.24l-1.42,-1.42L14,7.17l1.42,1.42L9.87,14.14l-3.54,-3.54l-1.41,1.41l1.41,1.41l-2.12,2.12c-0.78,0.78 -0.78,2.05 0,2.83l0,0c0.78,0.78 2.05,0.78 2.83,0L9.17,16.24l1.41,1.41l1.41,-1.41l-3.54,-3.54l5.55,-5.55l1.42,1.42l1.41,-1.41l-1.42,-1.42l1.41,-1.41L18.17,5l1.41,1.42L21,3zM15.85,11l-1.42,-1.42l-1.41,1.42l1.41,1.41L15.85,11z"/>
+</vector>
