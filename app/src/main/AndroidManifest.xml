@@ -21,6 +21,9 @@
             android:name=".AcompanhamentoActivity"
             android:exported="false" />
         <activity
+            android:name=".PerfilActivity"
+            android:exported="false" />
+        <activity
             android:name=".NovoRegistroActivity"
             android:exported="false" />
         <activity

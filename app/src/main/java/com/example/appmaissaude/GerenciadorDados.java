@@ -83,4 +83,51 @@ public class GerenciadorDados {
             return null;
         }
     }
+
+    // ── Perfil do Usuário ──────────────────────────────────────────────────────
+
+    private static final String KEY_PERFIL_NOME      = "perfil_nome";
+    private static final String KEY_PERFIL_CPF       = "perfil_cpf";
+    private static final String KEY_PERFIL_TELEFONE  = "perfil_telefone";
+    private static final String KEY_PERFIL_EMAIL     = "perfil_email";
+    private static final String KEY_PERFIL_SENHA     = "perfil_senha";
+
+    public static class PerfilUsuario {
+        public String nome;
+        public String cpf;
+        public String telefone;
+        public String email;
+        public String senha;
+
+        public PerfilUsuario(String nome, String cpf, String telefone, String email, String senha) {
+            this.nome = nome != null ? nome : "";
+            this.cpf = cpf != null ? cpf : "";
+            this.telefone = telefone != null ? telefone : "";
+            this.email = email != null ? email : "";
+            this.senha = senha != null ? senha : "";
+        }
+    }
+
+    public static void salvarPerfil(Context context, String nome, String cpf,
+                                     String telefone, String email, String senha) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit()
+                .putString(KEY_PERFIL_NOME, nome)
+                .putString(KEY_PERFIL_CPF, cpf)
+                .putString(KEY_PERFIL_TELEFONE, telefone)
+                .putString(KEY_PERFIL_EMAIL, email)
+                .putString(KEY_PERFIL_SENHA, senha)
+                .apply();
+    }
+
+    public static PerfilUsuario carregarPerfil(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return new PerfilUsuario(
+                prefs.getString(KEY_PERFIL_NOME, ""),
+                prefs.getString(KEY_PERFIL_CPF, ""),
+                prefs.getString(KEY_PERFIL_TELEFONE, ""),
+                prefs.getString(KEY_PERFIL_EMAIL, ""),
+                prefs.getString(KEY_PERFIL_SENHA, "")
+        );
+    }
 }

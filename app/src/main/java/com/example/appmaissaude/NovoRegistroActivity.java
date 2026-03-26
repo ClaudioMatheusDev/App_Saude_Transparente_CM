@@ -51,7 +51,7 @@ public class NovoRegistroActivity extends AppCompatActivity {
         Spinner spinnerCentrosSaude = findViewById(R.id.spinnerCentrosSaude);
         ImageView btnAddFoto = findViewById(R.id.btnAddFoto);
         ImageView imgPreview = findViewById(R.id.imgPreview);
-        TextView txtTitulo = findViewById(R.id.txtTituloNovoRegistro); // Você pode adicionar isso ao layout
+        TextView txtTitulo = findViewById(R.id.txtTituloNovoRegistro); 
 
         // Atualizar UI se for modo de edição
         if (modoEdicao && registroEmEdicao != null) {
@@ -249,7 +249,7 @@ public class NovoRegistroActivity extends AppCompatActivity {
                 Toast.makeText(this, "Alertas em desenvolvimento", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (itemId == R.id.nav_perfil) {
-                Toast.makeText(this, "Perfil em desenvolvimento", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(NovoRegistroActivity.this, PerfilActivity.class));
                 return true;
             }
             

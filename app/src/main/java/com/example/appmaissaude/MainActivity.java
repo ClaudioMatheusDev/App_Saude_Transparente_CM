@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Carregar e exibir número de registros
         carregarNumeroRegistros();
+        carregarNomePerfil();
 
         // NAVEGAÇÃO USANDO INTENTS
         btnNovoRegistro.setOnClickListener(v -> {
@@ -60,8 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Alertas em desenvolvimento", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (itemId == R.id.nav_perfil) {
-                // Funcionalidade futura
-                Toast.makeText(this, "Perfil em desenvolvimento", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, PerfilActivity.class));
                 return true;
             }
             
@@ -75,10 +75,19 @@ public class MainActivity extends AppCompatActivity {
         txtNumeroRegistros.setText(String.valueOf(registros.size()));
     }
 
+    private void carregarNomePerfil() {
+        TextView txtNome = findViewById(R.id.txtNomeUsuario);
+        GerenciadorDados.PerfilUsuario perfil = GerenciadorDados.carregarPerfil(this);
+        if (!perfil.nome.isEmpty()) {
+            txtNome.setText(perfil.nome);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        // Atualiza o contador quando o usuário volta para a tela
+        // Atualiza o contador e o nome quando o usuário volta para a tela
         carregarNumeroRegistros();
+        carregarNomePerfil();
     }
 }
