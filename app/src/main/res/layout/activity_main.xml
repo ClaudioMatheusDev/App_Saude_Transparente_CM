@@ -68,6 +68,7 @@
                         android:layout_height="64dp"
                         android:background="@drawable/bg_status_circle"
                         android:padding="16dp"
+                        android:contentDescription="Foto de perfil"
                         android:src="@android:drawable/ic_menu_myplaces"
                         app:tint="#00A38D" />
 

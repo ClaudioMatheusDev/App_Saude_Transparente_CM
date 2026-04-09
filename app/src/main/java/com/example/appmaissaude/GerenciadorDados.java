@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
@@ -15,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GerenciadorDados {
@@ -32,15 +34,44 @@ public class GerenciadorDados {
         editor.apply();
     }
 
-    // CARREGAR a lista completa
+    // CARREGAR a lista completa (mais recentes primeiro)
     public static List<Registro> carregarRegistros(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String json = prefs.getString(KEY_REGISTROS, null);
 
-        if (json == null) return new ArrayList<>(); // Se estiver vazio, retorna lista nova
+        if (json == null) return new ArrayList<>();
 
         Type type = new TypeToken<List<Registro>>() {}.getType();
-        return gson.fromJson(json, type); // Usa singleton
+        List<Registro> lista = gson.fromJson(json, type);
+        // Ordenar: mais recentes primeiro
+        Collections.sort(lista, (a, b) -> {
+            String da = a.getDataHora() != null ? a.getDataHora() : "";
+            String db = b.getDataHora() != null ? b.getDataHora() : "";
+            return db.compareTo(da);
+        });
+        return lista;
+    }
+
+    // TAMANHO MÁXIMO de imagem: 10 MB
+    private static final long MAX_IMAGE_BYTES = 10 * 1024 * 1024L;
+
+    /** Valida tamanho/tipo da imagem antes de salvar. Retorna mensagem de erro ou null se OK. */
+    public static String validarImagem(Context context, Uri imagemUri) {
+        try {
+            String mime = context.getContentResolver().getType(imagemUri);
+            if (mime == null || (!mime.equals("image/jpeg") && !mime.equals("image/png") && !mime.equals("image/webp"))) {
+                return "Formato inválido. Use JPEG, PNG ou WebP.";
+            }
+            try (InputStream is = context.getContentResolver().openInputStream(imagemUri)) {
+                if (is == null) return "Não foi possível ler a imagem.";
+                long size = is.available();
+                if (size > MAX_IMAGE_BYTES) return "Imagem muito grande (máx 10 MB).";
+            }
+        } catch (Exception e) {
+            Log.e("GerenciadorDados", "Erro ao validar imagem", e);
+            return "Erro ao validar imagem.";
+        }
+        return null;
     }
 
     // CONTAR registros por status
@@ -84,7 +115,7 @@ public class GerenciadorDados {
             }
             return arquivoImagem.getAbsolutePath();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("GerenciadorDados", "Erro ao salvar imagem", e);
             return null;
         }
     }
@@ -138,8 +169,8 @@ public class GerenciadorDados {
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            // SHA-256 always available on Android
-            return senha;
+            // SHA-256 is always available on Android 4.0+; this branch is unreachable
+            throw new RuntimeException("SHA-256 not available", e);
         }
     }
 

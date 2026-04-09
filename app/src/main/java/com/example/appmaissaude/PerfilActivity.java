@@ -14,7 +14,7 @@ import com.google.android.material.textfield.TextInputLayout;
 public class PerfilActivity extends BaseActivity {
 
     private TextInputEditText etNome, etCpf, etTelefone, etEmail, etSenha, etConfirmarSenha;
-    private TextInputLayout tilNome, tilEmail, tilSenha, tilConfirmarSenha;
+    private TextInputLayout tilNome, tilCpf, tilEmail, tilSenha, tilConfirmarSenha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,7 @@ public class PerfilActivity extends BaseActivity {
         etConfirmarSenha = findViewById(R.id.etConfirmarSenha);
 
         tilNome = findViewById(R.id.tilNome);
+        tilCpf = findViewById(R.id.tilCpf);
         tilEmail = findViewById(R.id.tilEmail);
         tilSenha = findViewById(R.id.tilSenha);
         tilConfirmarSenha = findViewById(R.id.tilConfirmarSenha);
@@ -106,6 +107,13 @@ public class PerfilActivity extends BaseActivity {
             return;
         }
 
+        // Validação de CPF
+        if (!TextUtils.isEmpty(cpf) && !cpfValido(cpf)) {
+            tilNome.setError(null);
+            etCpf.setError("CPF inválido");
+            etCpf.requestFocus();
+            return;
+        }
         if (!TextUtils.isEmpty(senha)) {
             if (senha.length() < 6) {
                 tilSenha.setError("A senha deve ter ao menos 6 caracteres");
@@ -123,6 +131,23 @@ public class PerfilActivity extends BaseActivity {
         // GerenciadorDados.salvarPerfil não altera a senha se o campo for vazio
         GerenciadorDados.salvarPerfil(this, nome, cpf, telefone, email, senha);
         Toast.makeText(this, getString(R.string.perfil_salvo), Toast.LENGTH_SHORT).show();
+    }
+
+    /** Valida CPF usando dígitos verificadores. */
+    private boolean cpfValido(String cpf) {
+        String c = cpf.replaceAll("\\D", "");
+        if (c.length() != 11) return false;
+        if (c.matches("(\\d)\\1{10}")) return false; // Todos iguais (00000000000)
+        int sum = 0;
+        for (int i = 0; i < 9; i++) sum += (c.charAt(i) - '0') * (10 - i);
+        int r1 = (sum * 10) % 11;
+        if (r1 == 10 || r1 == 11) r1 = 0;
+        if (r1 != (c.charAt(9) - '0')) return false;
+        sum = 0;
+        for (int i = 0; i < 10; i++) sum += (c.charAt(i) - '0') * (11 - i);
+        int r2 = (sum * 10) % 11;
+        if (r2 == 10 || r2 == 11) r2 = 0;
+        return r2 == (c.charAt(10) - '0');
     }
 
     @Override

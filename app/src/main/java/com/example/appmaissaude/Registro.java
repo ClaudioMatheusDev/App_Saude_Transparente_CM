@@ -14,6 +14,8 @@ public class Registro implements Parcelable {
     private String dataHora;
     private String caminhoImagem; // Caminho da imagem salva
     private String status; // Status como String para compatibilidade com Gson
+    private double latitude;
+    private double longitude;
 
     public Registro(String categoria, String local, String descricao, String caminhoImagem) {
         this.id = String.valueOf(System.currentTimeMillis()); // ID único baseado em timestamp
@@ -35,6 +37,8 @@ public class Registro implements Parcelable {
         dataHora = in.readString();
         caminhoImagem = in.readString();
         status = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
     }
 
     public static final Creator<Registro> CREATOR = new Creator<Registro>() {
@@ -68,6 +72,11 @@ public class Registro implements Parcelable {
     public void setStatus(StatusRegistro status) { 
         this.status = status.name(); 
     }
+    public double getLatitude() { return latitude; }
+    public double getLongitude() { return longitude; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
+    public boolean temLocalizacao() { return latitude != 0.0 || longitude != 0.0; }
 
     @Override
     public int describeContents() {
@@ -83,5 +92,7 @@ public class Registro implements Parcelable {
         dest.writeString(dataHora);
         dest.writeString(caminhoImagem);
         dest.writeString(status);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
     }
 }

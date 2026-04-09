@@ -84,10 +84,25 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/btnVerMapa"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:padding="2dp"
+                android:contentDescription="Ver no mapa"
+                android:src="@android:drawable/ic_dialog_map"
+                app:tint="#FF5722"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone" />
+
+            <ImageView
                 android:id="@+id/btnCompartilhar"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:padding="4dp"
+                android:contentDescription="Compartilhar registro"
                 android:src="@android:drawable/ic_menu_share"
                 app:tint="#2196F3"
                 android:clickable="true"
@@ -100,6 +115,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:padding="4dp"
+                android:contentDescription="Editar registro"
                 android:src="@android:drawable/ic_menu_edit"
                 app:tint="#4CAF50"
                 android:clickable="true"
@@ -112,6 +128,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:padding="4dp"
+                android:contentDescription="Excluir registro"
                 android:src="@android:drawable/ic_menu_delete"
                 app:tint="#FF5252"
                 android:clickable="true"

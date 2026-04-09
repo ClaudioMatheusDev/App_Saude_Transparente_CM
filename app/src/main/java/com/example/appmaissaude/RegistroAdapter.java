@@ -103,6 +103,20 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
             Toast.makeText(v.getContext(), v.getContext().getString(R.string.status_alterado_para, proximoStatus.getTexto()), Toast.LENGTH_SHORT).show();
         });
 
+        // AÇÃO DO BOTÃO VER NO MAPA
+        if (registro.temLocalizacao()) {
+            holder.btnVerMapa.setVisibility(View.VISIBLE);
+            holder.btnVerMapa.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), MapPickerActivity.class);
+                intent.putExtra("modo", "viewer");
+                intent.putExtra("latitude", registro.getLatitude());
+                intent.putExtra("longitude", registro.getLongitude());
+                v.getContext().startActivity(intent);
+            });
+        } else {
+            holder.btnVerMapa.setVisibility(View.GONE);
+        }
+
         // AÇÃO DO BOTÃO COMPARTILHAR
         holder.btnCompartilhar.setOnClickListener(v -> {
             String texto = "📋 " + registro.getCategoria()
@@ -131,9 +145,8 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
                     .setTitle(R.string.dialogo_titulo_excluir)
                     .setMessage(R.string.dialogo_msg_excluir)
                     .setPositiveButton(R.string.dialogo_sim_excluir, (dialog, which) -> {
-                        // Lógica de exclusão que já tínhamos (Só acontece se clicar em Sim)
-                        int currentPos = holder.getAdapterPosition(); // Forma mais segura de pegar a posição
-                        if (currentPos != RecyclerView.NO_POSITION) {
+                        int currentPos = holder.getAdapterPosition();
+                        if (currentPos != RecyclerView.NO_POSITION && currentPos < listaRegistros.size()) {
                             listaRegistros.remove(currentPos);
                             GerenciadorDados.salvarRegistros(v.getContext(), listaRegistros);
                             notifyItemRemoved(currentPos);
@@ -153,7 +166,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
 
     class RegistroViewHolder extends RecyclerView.ViewHolder {
         TextView txtCategoria, txtLocal, txtDescricao, txtDataHora, txtStatus;
-        ImageView btnExcluir, btnEditar, btnCompartilhar;
+        ImageView btnExcluir, btnEditar, btnCompartilhar, btnVerMapa;
 
         public RegistroViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -165,6 +178,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
             btnExcluir = itemView.findViewById(R.id.btnExcluir);
             btnEditar = itemView.findViewById(R.id.btnEditar);
             btnCompartilhar = itemView.findViewById(R.id.btnCompartilhar);
+            btnVerMapa = itemView.findViewById(R.id.btnVerMapa);
         }
     }
 }
