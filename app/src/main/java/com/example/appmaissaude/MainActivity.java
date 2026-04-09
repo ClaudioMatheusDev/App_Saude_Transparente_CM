@@ -2,10 +2,8 @@ package com.example.appmaissaude; // Confirme se o seu pacote é este
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.List;
@@ -57,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             } else if (itemId == R.id.nav_notificacoes) {
-                // Funcionalidade futura
-                Toast.makeText(this, "Alertas em desenvolvimento", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, AlertasActivity.class));
                 return true;
             } else if (itemId == R.id.nav_perfil) {
                 startActivity(new Intent(MainActivity.this, PerfilActivity.class));
@@ -71,15 +68,31 @@ public class MainActivity extends AppCompatActivity {
 
     private void carregarNumeroRegistros() {
         TextView txtNumeroRegistros = findViewById(R.id.txtNumeroRegistros);
+        TextView txtPendentes = findViewById(R.id.txtRegistrosPendentes);
         List<Registro> registros = GerenciadorDados.carregarRegistros(this);
         txtNumeroRegistros.setText(String.valueOf(registros.size()));
+        int pendentes = 0;
+        for (Registro r : registros) {
+            if (r.getStatus() == StatusRegistro.PENDENTE) pendentes++;
+        }
+        if (pendentes > 0) {
+            txtPendentes.setText(getString(R.string.pendentes_label, pendentes));
+        } else {
+            txtPendentes.setText(registros.isEmpty() ? "" : getString(R.string.nenhum_pendente));
+        }
     }
 
     private void carregarNomePerfil() {
         TextView txtNome = findViewById(R.id.txtNomeUsuario);
+        TextView txtId = findViewById(R.id.txtIdUsuario);
         GerenciadorDados.PerfilUsuario perfil = GerenciadorDados.carregarPerfil(this);
         if (!perfil.nome.isEmpty()) {
             txtNome.setText(perfil.nome);
+            String subtitulo = !perfil.email.isEmpty() ? perfil.email : (!perfil.telefone.isEmpty() ? perfil.telefone : "");
+            txtId.setText(subtitulo.isEmpty() ? getString(R.string.placeholder_id_usuario) : subtitulo);
+        } else {
+            txtNome.setText(getString(R.string.placeholder_nome_usuario));
+            txtId.setText("");
         }
     }
 

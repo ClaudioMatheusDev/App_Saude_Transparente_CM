@@ -61,8 +61,8 @@ public class NovoRegistroActivity extends AppCompatActivity {
             btnEnviar.setText(R.string.btn_atualizar);
         }
 
-        // 1. Configurar o Spinner (Lista de Locais)
-        String[] locais = {"UBS Central", "Hospital Regional", "Posto de Saúde Vila Nova", "UPA 24h Centro", "Centro de Saúde da Família"};
+        // 1. Configurar o Spinner (Lista de Locais via resources)
+        String[] locais = getResources().getStringArray(R.array.locais_saude);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locais);
         spinnerCentrosSaude.setAdapter(adapter);
 
@@ -243,7 +243,7 @@ public class NovoRegistroActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             } else if (itemId == R.id.nav_notificacoes) {
-                Toast.makeText(this, "Alertas em desenvolvimento", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(NovoRegistroActivity.this, AlertasActivity.class));
                 return true;
             } else if (itemId == R.id.nav_perfil) {
                 startActivity(new Intent(NovoRegistroActivity.this, PerfilActivity.class));

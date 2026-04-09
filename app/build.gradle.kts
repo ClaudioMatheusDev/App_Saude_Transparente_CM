@@ -7,7 +7,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.claudiomatheus.saudetransparente"
+        applicationId = "com.example.appmaissaude"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

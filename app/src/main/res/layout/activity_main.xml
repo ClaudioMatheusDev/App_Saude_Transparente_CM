@@ -77,7 +77,7 @@
                     android:id="@+id/txtNomeUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="João Silva"
+                    android:text="@string/placeholder_nome_usuario"
                     android:textColor="#000000"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -87,7 +87,7 @@
                     android:id="@+id/txtIdUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ID: 12345678"
+                    android:text="@string/placeholder_id_usuario"
                     android:textColor="#999999"
                     android:textSize="12sp"
                     android:layout_marginTop="2dp" />
@@ -112,9 +112,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Registros"
+                    android:text="@string/total_registros_label"
                     android:textColor="#666666"
                     android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/txtRegistrosPendentes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text=""
+                    android:textColor="#FF9800"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

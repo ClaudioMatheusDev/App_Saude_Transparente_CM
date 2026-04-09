@@ -55,7 +55,7 @@ public class AcompanhamentoActivity extends AppCompatActivity {
                 // Já está no histórico
                 return true;
             } else if (itemId == R.id.nav_notificacoes) {
-                Toast.makeText(this, "Alertas em desenvolvimento", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(AcompanhamentoActivity.this, AlertasActivity.class));
                 return true;
             } else if (itemId == R.id.nav_perfil) {
                 startActivity(new Intent(AcompanhamentoActivity.this, PerfilActivity.class));

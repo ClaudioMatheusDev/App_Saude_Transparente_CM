@@ -24,7 +24,30 @@
     <string name="dialogo_sim_excluir">Sim, Excluir</string>
     <string name="dialogo_cancelar">Cancelar</string>
 
+    <!-- Placeholders da tela principal -->
+    <string name="placeholder_nome_usuario">Olá, complete seu perfil</string>
+    <string name="placeholder_id_usuario">Nenhum perfil configurado</string>
+    <string name="perfil_salvo">Perfil salvo com sucesso!</string>
+
     <!-- Mensagens gerais -->
     <string name="alertas_em_desenvolvimento">Alertas em desenvolvimento</string>
-    <string name="perfil_salvo">Perfil salvo com sucesso!</string>
+
+    <!-- Contador da home -->
+    <string name="total_registros_label">Registros</string>
+    <string name="pendentes_label">%1$d pendente(s)</string>
+    <string name="nenhum_pendente">Tudo em dia ✅</string>
+
+    <!-- Alertas -->
+    <string name="titulo_alertas">ALERTAS</string>
+    <string name="subtitulo_alertas">REGISTROS PENDENTES</string>
+    <string name="lista_alertas_vazia">✅ Nenhum registro pendente!\n\nTodos os seus registros foram tratados.</string>
+
+    <!-- Locais de saúde -->
+    <string-array name="locais_saude">
+        <item>UBS Central</item>
+        <item>Hospital Regional</item>
+        <item>Posto de Saúde Vila Nova</item>
+        <item>UPA 24h Centro</item>
+        <item>Centro de Saúde da Família</item>
+    </string-array>
 </resources>
