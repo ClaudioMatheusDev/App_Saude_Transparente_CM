@@ -56,9 +56,9 @@ public class NovoRegistroActivity extends AppCompatActivity {
         // Atualizar UI se for modo de edição
         if (modoEdicao && registroEmEdicao != null) {
             if (txtTitulo != null) {
-                txtTitulo.setText("EDITAR REGISTRO");
+                txtTitulo.setText(R.string.titulo_editar_registro);
             }
-            btnEnviar.setText("ATUALIZAR");
+            btnEnviar.setText(R.string.btn_atualizar);
         }
 
         // 1. Configurar o Spinner (Lista de Locais)
@@ -122,7 +122,7 @@ public class NovoRegistroActivity extends AppCompatActivity {
             for (LinearLayout cat : listaCategorias) {
                 cat.setBackgroundColor(Color.TRANSPARENT);
             }
-            v.setBackgroundColor(Color.parseColor("#D0EFEA"));
+            v.setBackgroundColor(v.getContext().getColor(R.color.category_selected));
             int id = v.getId();
             if (id == R.id.catInfra) categoriaSelecionada = "Infraestrutura";
             else if (id == R.id.catMedicamentos) categoriaSelecionada = "Medicamentos";
@@ -155,7 +155,7 @@ public class NovoRegistroActivity extends AppCompatActivity {
                 else if (id == R.id.catAcessibilidade) catNome = "Acessibilidade";
                 
                 if (catNome.equals(registroEmEdicao.getCategoria())) {
-                    cat.setBackgroundColor(Color.parseColor("#D0EFEA"));
+                    cat.setBackgroundColor(cat.getContext().getColor(R.color.category_selected));
                 }
             }
         }
@@ -164,63 +164,60 @@ public class NovoRegistroActivity extends AppCompatActivity {
         btnEnviar.setOnClickListener(v -> {
             // VALIDAÇÃO COMPLETA
             if (categoriaSelecionada.isEmpty()) {
-                Toast.makeText(this, "❌ Por favor, selecione uma categoria!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.erro_categoria_vazia), Toast.LENGTH_SHORT).show();
                 return;
             }
 
             String desc = editDescricao.getText().toString().trim();
             if (desc.isEmpty()) {
-                Toast.makeText(this, "❌ Por favor, descreva o problema!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.erro_descricao_vazia), Toast.LENGTH_SHORT).show();
                 editDescricao.requestFocus();
                 return;
             }
 
             if (desc.length() < 10) {
-                Toast.makeText(this, "❌ Descrição muito curta. Mínimo 10 caracteres.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.erro_descricao_curta), Toast.LENGTH_SHORT).show();
                 editDescricao.requestFocus();
                 return;
             }
 
-            // Salvar imagem se foi selecionada
-            String caminhoImagem = null;
-            if (imagemSelecionadaUri != null) {
-                caminhoImagem = GerenciadorDados.salvarImagem(this, imagemSelecionadaUri);
-                if (caminhoImagem == null) {
-                    Toast.makeText(this, "⚠️ Erro ao salvar imagem. Continuando sem foto...", Toast.LENGTH_SHORT).show();
-                }
-            } else if (modoEdicao && registroEmEdicao != null) {
-                // Manter imagem antiga se não selecionou nova
-                caminhoImagem = registroEmEdicao.getCaminhoImagem();
-            }
-
+            v.setEnabled(false);
             String local = spinnerCentrosSaude.getSelectedItem().toString();
+            String imagemAnterior = (modoEdicao && registroEmEdicao != null)
+                    ? registroEmEdicao.getCaminhoImagem() : null;
 
-            if (modoEdicao && registroEmEdicao != null) {
-                // MODO EDIÇÃO: Atualizar registro existente
-                registroEmEdicao.setCategoria(categoriaSelecionada);
-                registroEmEdicao.setLocal(local);
-                registroEmEdicao.setDescricao(desc);
-                registroEmEdicao.setCaminhoImagem(caminhoImagem);
-                
-                boolean sucesso = GerenciadorDados.atualizarRegistro(this, registroEmEdicao);
-                if (sucesso) {
-                    Toast.makeText(this, "✅ Registro atualizado com sucesso!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "❌ Erro ao atualizar registro!", Toast.LENGTH_SHORT).show();
+            android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+            java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+                String caminhoImagem = imagemAnterior;
+                if (imagemSelecionadaUri != null) {
+                    caminhoImagem = GerenciadorDados.salvarImagem(NovoRegistroActivity.this, imagemSelecionadaUri);
+                    if (caminhoImagem == null) {
+                        handler.post(() -> Toast.makeText(NovoRegistroActivity.this,
+                                getString(R.string.erro_salvar_imagem), Toast.LENGTH_SHORT).show());
+                    }
                 }
-            } else {
-                // MODO CRIAÇÃO: Criar novo registro
-                Registro novoRegistro = new Registro(categoriaSelecionada, local, desc, caminhoImagem);
-
-                // Guardar permanentemente
-                List<Registro> listaAtual = GerenciadorDados.carregarRegistros(this);
-                listaAtual.add(novoRegistro);
-                GerenciadorDados.salvarRegistros(this, listaAtual);
-
-                Toast.makeText(this, "✅ Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
-            }
-
-            finish();
+                final String caminhoFinal = caminhoImagem;
+                handler.post(() -> {
+                    if (modoEdicao && registroEmEdicao != null) {
+                        registroEmEdicao.setCategoria(categoriaSelecionada);
+                        registroEmEdicao.setLocal(local);
+                        registroEmEdicao.setDescricao(desc);
+                        registroEmEdicao.setCaminhoImagem(caminhoFinal);
+                        boolean sucesso = GerenciadorDados.atualizarRegistro(NovoRegistroActivity.this, registroEmEdicao);
+                        Toast.makeText(NovoRegistroActivity.this,
+                                sucesso ? getString(R.string.registro_atualizado) : getString(R.string.erro_atualizar_registro),
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Registro novoRegistro = new Registro(categoriaSelecionada, local, desc, caminhoFinal);
+                        List<Registro> listaAtual = GerenciadorDados.carregarRegistros(NovoRegistroActivity.this);
+                        listaAtual.add(novoRegistro);
+                        GerenciadorDados.salvarRegistros(NovoRegistroActivity.this, listaAtual);
+                        Toast.makeText(NovoRegistroActivity.this,
+                                getString(R.string.registro_salvo), Toast.LENGTH_SHORT).show();
+                    }
+                    finish();
+                });
+            });
         });
 
         btnVoltarNovo.setOnClickListener(v -> finish());

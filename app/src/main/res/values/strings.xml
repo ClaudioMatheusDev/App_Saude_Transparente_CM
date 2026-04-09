@@ -1,3 +1,30 @@
 <resources>
-    <string name="app_name">AppMaisSaude</string>
+    <string name="app_name">Saúde Transparente</string>
+
+    <!-- Validação - Novo Registro -->
+    <string name="erro_categoria_vazia">❌ Por favor, selecione uma categoria!</string>
+    <string name="erro_descricao_vazia">❌ Por favor, descreva o problema!</string>
+    <string name="erro_descricao_curta">❌ Descrição muito curta. Mínimo 10 caracteres.</string>
+    <string name="erro_salvar_imagem">⚠️ Erro ao salvar imagem. Continuando sem foto…</string>
+
+    <!-- Confirmações -->
+    <string name="registro_salvo">✅ Registro salvo com sucesso!</string>
+    <string name="registro_atualizado">✅ Registro atualizado com sucesso!</string>
+    <string name="erro_atualizar_registro">❌ Erro ao atualizar registro!</string>
+    <string name="registro_removido">Registro removido!</string>
+    <string name="status_alterado_para">Status alterado para: %1$s</string>
+
+    <!-- Modo edição -->
+    <string name="titulo_editar_registro">EDITAR REGISTRO</string>
+    <string name="btn_atualizar">ATUALIZAR</string>
+
+    <!-- Diálogo de exclusão -->
+    <string name="dialogo_titulo_excluir">Confirmar Exclusão</string>
+    <string name="dialogo_msg_excluir">Deseja realmente apagar este registro? Esta ação não pode ser desfeita.</string>
+    <string name="dialogo_sim_excluir">Sim, Excluir</string>
+    <string name="dialogo_cancelar">Cancelar</string>
+
+    <!-- Mensagens gerais -->
+    <string name="alertas_em_desenvolvimento">Alertas em desenvolvimento</string>
+    <string name="perfil_salvo">Perfil salvo com sucesso!</string>
 </resources>

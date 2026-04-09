@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
@@ -20,10 +21,43 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
         this.listaRegistros = listaRegistros;
     }
 
-    // Método para atualizar dados sem recriar o adapter
+    // Método para atualizar dados com DiffUtil (animações eficientes)
     public void atualizarDados(List<Registro> novosRegistros) {
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(
+                new RegistroDiffCallback(this.listaRegistros, novosRegistros));
         this.listaRegistros = novosRegistros;
-        notifyDataSetChanged();
+        result.dispatchUpdatesTo(this);
+    }
+
+    private static class RegistroDiffCallback extends DiffUtil.Callback {
+        private final List<Registro> oldList;
+        private final List<Registro> newList;
+
+        RegistroDiffCallback(List<Registro> oldList, List<Registro> newList) {
+            this.oldList = oldList;
+            this.newList = newList;
+        }
+
+        @Override
+        public int getOldListSize() { return oldList.size(); }
+
+        @Override
+        public int getNewListSize() { return newList.size(); }
+
+        @Override
+        public boolean areItemsTheSame(int oldPos, int newPos) {
+            return oldList.get(oldPos).getId().equals(newList.get(newPos).getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldPos, int newPos) {
+            Registro o = oldList.get(oldPos);
+            Registro n = newList.get(newPos);
+            return o.getCategoria().equals(n.getCategoria())
+                    && o.getLocal().equals(n.getLocal())
+                    && o.getDescricao().equals(n.getDescricao())
+                    && o.getStatus() == n.getStatus();
+        }
     }
 
     @NonNull
@@ -55,7 +89,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
 
         // CLICAR NO STATUS para alternar
         holder.txtStatus.setOnClickListener(v -> {
-            StatusRegistro proximoStatus = status.proximo();
+            StatusRegistro proximoStatus = registro.getStatus().proximo();
             registro.setStatus(proximoStatus);
             
             // Salvar alteração
@@ -66,7 +100,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
             holder.txtStatus.setBackgroundColor(Color.parseColor(proximoStatus.getCor()));
             
             // Feedback
-            Toast.makeText(v.getContext(), "Status alterado para: " + proximoStatus.getTexto(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(), v.getContext().getString(R.string.status_alterado_para, proximoStatus.getTexto()), Toast.LENGTH_SHORT).show();
         });
 
         // AÇÃO DO BOTÃO EDITAR
@@ -81,9 +115,9 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
 
             // Criar o Alerta
             new androidx.appcompat.app.AlertDialog.Builder(v.getContext())
-                    .setTitle("Confirmar Exclusão")
-                    .setMessage("Deseja realmente apagar este registro? Esta ação não pode ser desfeita.")
-                    .setPositiveButton("Sim, Excluir", (dialog, which) -> {
+                    .setTitle(R.string.dialogo_titulo_excluir)
+                    .setMessage(R.string.dialogo_msg_excluir)
+                    .setPositiveButton(R.string.dialogo_sim_excluir, (dialog, which) -> {
                         // Lógica de exclusão que já tínhamos (Só acontece se clicar em Sim)
                         int currentPos = holder.getAdapterPosition(); // Forma mais segura de pegar a posição
                         if (currentPos != RecyclerView.NO_POSITION) {
@@ -91,10 +125,10 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
                             GerenciadorDados.salvarRegistros(v.getContext(), listaRegistros);
                             notifyItemRemoved(currentPos);
                             notifyItemRangeChanged(currentPos, listaRegistros.size());
-                            Toast.makeText(v.getContext(), "Registro removido!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(), R.string.registro_removido, Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .setNegativeButton("Cancelar", null) // Se clicar em cancelar, a janela apenas fecha
+                    .setNegativeButton(R.string.dialogo_cancelar, null)
                     .show();
         });
     }

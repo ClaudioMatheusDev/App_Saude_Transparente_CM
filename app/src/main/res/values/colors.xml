@@ -3,4 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="teal_primary">#00A38D</color> <color name="teal_dark">#00796B</color>    <color name="background_gray">#F5F5F5</color> <color name="status_green">#00C853</color>  <color name="status_orange">#FFAB40</color> <color name="status_yellow">#FFD600</color> </resources>
+    <color name="teal_primary">#00A38D</color>
+    <color name="teal_dark">#00796B</color>
+    <color name="background_gray">#F5F5F5</color>
+    <color name="status_green">#00C853</color>
+    <color name="status_orange">#FFAB40</color>
+    <color name="status_yellow">#FFD600</color>
+    <color name="category_selected">#D0EFEA</color>
+</resources>

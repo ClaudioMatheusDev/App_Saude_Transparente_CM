@@ -120,13 +120,8 @@ public class PerfilActivity extends AppCompatActivity {
         }
 
         // Buscar senha já salva se campo estiver vazio (manter a anterior)
-        String senhaParaSalvar = senha;
-        if (TextUtils.isEmpty(senha)) {
-            GerenciadorDados.PerfilUsuario perfilAtual = GerenciadorDados.carregarPerfil(this);
-            senhaParaSalvar = perfilAtual.senha;
-        }
-
-        GerenciadorDados.salvarPerfil(this, nome, cpf, telefone, email, senhaParaSalvar);
-        Toast.makeText(this, "Perfil salvo com sucesso!", Toast.LENGTH_SHORT).show();
+        // GerenciadorDados.salvarPerfil não altera a senha se o campo for vazio
+        GerenciadorDados.salvarPerfil(this, nome, cpf, telefone, email, senha);
+        Toast.makeText(this, getString(R.string.perfil_salvo), Toast.LENGTH_SHORT).show();
     }
 }
