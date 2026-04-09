@@ -6,17 +6,20 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.ChipGroup;
+import java.util.ArrayList;
 import java.util.List;
 
-public class AcompanhamentoActivity extends AppCompatActivity {
+public class AcompanhamentoActivity extends BaseActivity {
 
     private RegistroAdapter adapter;
     private RecyclerView rv;
     private TextView txtListaVazia;
+    private List<Registro> todosRegistros = new ArrayList<>();
+    private StatusRegistro filtroAtual = null; // null = todos
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +35,22 @@ public class AcompanhamentoActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
 
         // Mensagem de lista vazia (se existir no layout)
-        txtListaVazia = findViewById(R.id.txtListaVazia); // Você pode adicionar isso ao layout
+        txtListaVazia = findViewById(R.id.txtListaVazia);
 
         // 3. CARREGAR DADOS REAIS (Do SharedPreferences via GerenciadorDados)
         carregarDados();
+
+        // 4. Chips de filtro
+        ChipGroup chipGroup = findViewById(R.id.chipGroupFiltro);
+        chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
+            if (checkedIds.isEmpty()) return;
+            int id = checkedIds.get(0);
+            if (id == R.id.chipTodos)       filtroAtual = null;
+            else if (id == R.id.chipPendente)  filtroAtual = StatusRegistro.PENDENTE;
+            else if (id == R.id.chipEmAnalise) filtroAtual = StatusRegistro.EM_ANALISE;
+            else if (id == R.id.chipResolvido) filtroAtual = StatusRegistro.RESOLVIDO;
+            aplicarFiltro();
+        });
 
         // 4. Bottom Navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
@@ -68,11 +83,21 @@ public class AcompanhamentoActivity extends AppCompatActivity {
 
     // Método para carregar e atualizar dados
     private void carregarDados() {
-        List<Registro> registrosSalvos = GerenciadorDados.carregarRegistros(this);
+        todosRegistros = GerenciadorDados.carregarRegistros(this);
+        aplicarFiltro();
+    }
+
+    private void aplicarFiltro() {
+        List<Registro> filtrados = new ArrayList<>();
+        for (Registro r : todosRegistros) {
+            if (filtroAtual == null || r.getStatus() == filtroAtual) {
+                filtrados.add(r);
+            }
+        }
 
         // Mostrar/esconder mensagem de lista vazia
         if (txtListaVazia != null) {
-            if (registrosSalvos.isEmpty()) {
+            if (filtrados.isEmpty()) {
                 txtListaVazia.setVisibility(View.VISIBLE);
                 rv.setVisibility(View.GONE);
             } else {
@@ -81,12 +106,11 @@ public class AcompanhamentoActivity extends AppCompatActivity {
             }
         }
 
-        // Criar adapter apenas uma vez ou atualizar dados
         if (adapter == null) {
-            adapter = new RegistroAdapter(registrosSalvos);
+            adapter = new RegistroAdapter(filtrados);
             rv.setAdapter(adapter);
         } else {
-            adapter.atualizarDados(registrosSalvos); // Método que criaremos no adapter
+            adapter.atualizarDados(filtrados);
         }
     }
 
@@ -95,5 +119,6 @@ public class AcompanhamentoActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         carregarDados();
+        atualizarBadgeAlertas();
     }
 }

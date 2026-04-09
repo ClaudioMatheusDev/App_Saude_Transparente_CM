@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnNovoRegistro = findViewById(R.id.btnNovoRegistro);
         Button btnVerRegistros = findViewById(R.id.btnVerRegistros);
-        TextView txtNumeroRegistros = findViewById(R.id.txtNumeroRegistros);
 
         // Carregar e exibir número de registros
         carregarNumeroRegistros();
@@ -69,12 +68,22 @@ public class MainActivity extends AppCompatActivity {
     private void carregarNumeroRegistros() {
         TextView txtNumeroRegistros = findViewById(R.id.txtNumeroRegistros);
         TextView txtPendentes = findViewById(R.id.txtRegistrosPendentes);
+        TextView txtStatPendente = findViewById(R.id.txtStatPendente);
+        TextView txtStatAnalise = findViewById(R.id.txtStatAnalise);
+        TextView txtStatResolvido = findViewById(R.id.txtStatResolvido);
         List<Registro> registros = GerenciadorDados.carregarRegistros(this);
         txtNumeroRegistros.setText(String.valueOf(registros.size()));
-        int pendentes = 0;
+        int pendentes = 0, emAnalise = 0, resolvidos = 0;
         for (Registro r : registros) {
-            if (r.getStatus() == StatusRegistro.PENDENTE) pendentes++;
+            switch (r.getStatus()) {
+                case PENDENTE:   pendentes++;  break;
+                case EM_ANALISE: emAnalise++;  break;
+                case RESOLVIDO:  resolvidos++; break;
+            }
         }
+        txtStatPendente.setText(String.valueOf(pendentes));
+        txtStatAnalise.setText(String.valueOf(emAnalise));
+        txtStatResolvido.setText(String.valueOf(resolvidos));
         if (pendentes > 0) {
             txtPendentes.setText(getString(R.string.pendentes_label, pendentes));
         } else {
@@ -99,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Atualiza o contador e o nome quando o usuário volta para a tela
         carregarNumeroRegistros();
         carregarNomePerfil();
+        atualizarBadgeAlertas();
     }
 }

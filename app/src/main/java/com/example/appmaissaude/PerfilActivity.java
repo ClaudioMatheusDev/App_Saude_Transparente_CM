@@ -11,7 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class PerfilActivity extends AppCompatActivity {
+public class PerfilActivity extends BaseActivity {
 
     private TextInputEditText etNome, etCpf, etTelefone, etEmail, etSenha, etConfirmarSenha;
     private TextInputLayout tilNome, tilEmail, tilSenha, tilConfirmarSenha;
@@ -123,5 +123,11 @@ public class PerfilActivity extends AppCompatActivity {
         // GerenciadorDados.salvarPerfil não altera a senha se o campo for vazio
         GerenciadorDados.salvarPerfil(this, nome, cpf, telefone, email, senha);
         Toast.makeText(this, getString(R.string.perfil_salvo), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        atualizarBadgeAlertas();
     }
 }

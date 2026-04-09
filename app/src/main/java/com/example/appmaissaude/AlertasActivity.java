@@ -13,7 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlertasActivity extends AppCompatActivity {
+public class AlertasActivity extends BaseActivity {
 
     private RegistroAdapter adapter;
     private RecyclerView rv;
@@ -91,5 +91,6 @@ public class AlertasActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         carregarDados();
+        atualizarBadgeAlertas();
     }
 }

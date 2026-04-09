@@ -103,6 +103,19 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
             Toast.makeText(v.getContext(), v.getContext().getString(R.string.status_alterado_para, proximoStatus.getTexto()), Toast.LENGTH_SHORT).show();
         });
 
+        // AÇÃO DO BOTÃO COMPARTILHAR
+        holder.btnCompartilhar.setOnClickListener(v -> {
+            String texto = "📋 " + registro.getCategoria()
+                    + "\n📍 " + registro.getLocal()
+                    + "\n📅 " + registro.getDataHora()
+                    + "\n\n" + registro.getDescricao()
+                    + "\n\nStatus: " + registro.getStatus().getTexto();
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("text/plain");
+            share.putExtra(Intent.EXTRA_TEXT, texto);
+            v.getContext().startActivity(Intent.createChooser(share, "Compartilhar Registro"));
+        });
+
         // AÇÃO DO BOTÃO EDITAR
         holder.btnEditar.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), NovoRegistroActivity.class);
@@ -140,7 +153,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
 
     class RegistroViewHolder extends RecyclerView.ViewHolder {
         TextView txtCategoria, txtLocal, txtDescricao, txtDataHora, txtStatus;
-        ImageView btnExcluir, btnEditar;
+        ImageView btnExcluir, btnEditar, btnCompartilhar;
 
         public RegistroViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -151,6 +164,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
             txtDataHora = itemView.findViewById(R.id.txtItemDataHora);
             btnExcluir = itemView.findViewById(R.id.btnExcluir);
             btnEditar = itemView.findViewById(R.id.btnEditar);
+            btnCompartilhar = itemView.findViewById(R.id.btnCompartilhar);
         }
     }
 }

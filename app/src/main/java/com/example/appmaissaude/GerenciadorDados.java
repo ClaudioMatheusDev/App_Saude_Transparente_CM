@@ -43,6 +43,15 @@ public class GerenciadorDados {
         return gson.fromJson(json, type); // Usa singleton
     }
 
+    // CONTAR registros por status
+    public static int contarPorStatus(Context context, StatusRegistro status) {
+        int count = 0;
+        for (Registro r : carregarRegistros(context)) {
+            if (r.getStatus() == status) count++;
+        }
+        return count;
+    }
+
     // ATUALIZAR um registro específico
     public static boolean atualizarRegistro(Context context, Registro registroAtualizado) {
         List<Registro> lista = carregarRegistros(context);

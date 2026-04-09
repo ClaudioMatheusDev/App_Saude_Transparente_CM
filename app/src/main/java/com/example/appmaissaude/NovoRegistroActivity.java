@@ -26,7 +26,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.io.File;
 import java.util.List;
 
-public class NovoRegistroActivity extends AppCompatActivity {
+public class NovoRegistroActivity extends BaseActivity {
 
     private String categoriaSelecionada = "";
     private Uri imagemSelecionadaUri = null;
@@ -252,5 +252,11 @@ public class NovoRegistroActivity extends AppCompatActivity {
             
             return false;
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        atualizarBadgeAlertas();
     }
 }
